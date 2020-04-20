@@ -1,0 +1,75 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- CSS ===================== -->
+    <!-- load bootstrap -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 30px;
+        }
+    </style>
+    <title>Payment Gateway</title>
+</head>
+<!-- apply angular app and controller to our body -->
+<body ng-app="paymentApp" ng-controller="mainController">
+<div class="container">
+        <div class="col-sm-8 col-sm-offset-2">
+
+            <!-- PAGE HEADER -->
+            <div class="page-header"><h1>Payment Gateway Test</h1></div>
+            <div class="alert alert-info" role="alert">
+                See detals info about <a target="_blank" href="/swagger/ui/index#/" class="alert-link">Payment API</a>. Give it a click if you like.
+            </div>
+
+            <!-- FORM -->
+            <!-- pass in the variable if our form is valid or invalid -->
+            <form name="payForm" ng-submit="submitForm(payForm.$valid)" novalidate>
+                <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
+                <!-- Merchant Name -->
+                <div class="form-group" ng-class="{ 'has-error' : payForm.merchantName.$invalid && !payForm.merchantName.$pristine }">
+                    <label>Merchant Name</label>
+                    <input type="text" name="merchantName" class="form-control" ng-model="payModel.MerchantName" placeholder="only support alipay, qqpay, weixinpay" required>
+                    <p ng-show="payForm.merchantName.$invalid && !payForm.merchantName.$pristine" class="help-block">You merchant name is required.</p>
+                </div>
+
+                <!-- PeferenceFlag -->
+                <div class="form-group" ng-class="{ 'has-error' : payForm.referenceFlag.$invalid && !payForm.referenceFlag.$pristine }">
+                    <label>Reference No.</label>
+                    <input type="text" name="referenceFlag" class="form-control" ng-model="payModel.ReferenceFlag" required>
+                    <p ng-show="payForm.referenceFlag.$invalid && !payForm.referenceFlag.$pristine" class="help-block">You reference flag is required.</p>
+                </div>
+
+                <!-- Pay Amount -->
+                <div class="form-group" ng-class="{ 'has-error' : payForm.payAmount.$invalid && !payForm.payAmount.$pristine }">
+                    <label>Pay Amount</label>
+                    <input type="number" name="payAmount" step="0.01" class="form-control" ng-model="payModel.PayAmount" required>
+                    <p ng-show="payForm.payAmount.$invalid && !payForm.payAmount.$pristine" class="help-block">You pay amount is required.</p>
+                </div>
+                <!-- Pay Way -->
+                <div class="form-group">
+                    <label>Pay Way</label>
+                    <select name="Payway" ng-model="payModel.PayWay" class="form-control">
+                        <option value=1>Credit Card</option>
+                        <option value=2>Bank</option>
+                    </select>
+                </div>
+                <!-- SUBMIT BUTTON -->
+                <button type="submit" class="btn btn-primary" ng-disabled="payForm.$invalid">Submit</button>
+
+            </form>
+            <!-- PAGE Footer -->
+            <div class="page-header"><h1>Payment Gateway Result</h1></div>
+            <div ng-show="!transcationInfo.hasError && transcationInfo.hasError != null" class="alert alert-success" role="alert">{{transcationInfo.messageInfo}}</div>
+            <div ng-show="transcationInfo.hasError" class="alert alert-danger" role="alert">{{transcationInfo.messageInfo}}<br />{{transcationInfo.errorCode}}</div>
+        </div><!-- col-sm-8 -->
+
+    </div><!-- /container -->
+    <!-- load angular -->
+    <script src="http://code.angularjs.org/1.2.6/angular.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
